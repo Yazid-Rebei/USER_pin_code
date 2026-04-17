@@ -1,52 +1,85 @@
-# ESP32 PIN Lock System with LCD I2C
+# ESP32 Smart PIN Authentication System
 
-## Overview
+A lightweight embedded authentication system built with **ESP32** and **I2C LCD**, designed as a prototype for a smart lock or access control module.  
+The system supports user registration, PIN-based login, display feedback, sleep mode, and progressive lockout after repeated failed authentication attempts.
 
-This project is a simple authentication system built with **ESP32** and an **I2C LCD display**.  
-It allows the user to:
+---
 
-- add users with a **4-digit PIN**
-- log in using an existing PIN
-- display the list of registered users
-- put the system into **sleep mode**
-- block access after repeated failed login attempts
+## Table of Contents
 
-The project is designed as a basic prototype for a **smart lock / access control system**.
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [System Architecture](#system-architecture)
+- [Hardware Requirements](#hardware-requirements)
+- [Software Requirements](#software-requirements)
+- [Pin Configuration](#pin-configuration)
+- [Project Workflow](#project-workflow)
+- [Code Structure](#code-structure)
+- [Data Model](#data-model)
+- [Security Logic](#security-logic)
+- [How to Build and Run](#how-to-build-and-run)
+- [Example Serial Menu](#example-serial-menu)
+- [Current Limitations](#current-limitations)
+- [Future Improvements](#future-improvements)
+- [Use Cases](#use-cases)
+- [Author](#author)
+- [License](#license)
+
+---
+
+## Project Overview
+
+This project implements a simple **PIN-based authentication system** on ESP32.  
+It is intended as a first prototype for embedded applications such as:
+
+- smart door access systems
+- secure embedded control panels
+- login gateways for smart home modules
+- educational embedded security projects
+
+The user interacts with the system through:
+
+- the **Serial Monitor** for input
+- a **16x2 I2C LCD** for feedback and status display
 
 ---
 
 ## Features
 
-- User registration with unique 4-digit PIN
+- Registration of up to **5 users**
+- Unique **4-digit PIN** per user
+- Automatic username generation
 - PIN format validation
-- Login verification
-- LCD display feedback
-- Serial monitor interaction
-- Sleep mode
-- Temporary lock after failed attempts:
-  - first block: **30 seconds**
-  - second block: **60 seconds**
-  - then permanent block until restart
+- Authentication via serial input
+- LCD status messages
+- User list display
+- Sleep mode with LCD backlight off
+- Progressive anti-bruteforce lockout:
+  - after first 3 failed attempts: **30 seconds**
+  - after second 3 failed attempts: **60 seconds**
+  - after repeated failure: **permanent block until restart**
 
 ---
 
-## Hardware Requirements
+## System Architecture
 
-- ESP32
-- LCD I2C 16x2
-- Jumper wires
-- USB cable
-- Breadboard (optional)
+The project follows a simple procedural embedded design:
 
----
+```text id="e2n6hu"
+User Input (Serial Monitor)
+        |
+        v
+PIN Validation / Menu Selection
+        |
+        v
+Authentication Logic
+        |
+        +--> User Registration
+        +--> Login Verification
+        +--> User Listing
+        +--> Sleep Mode
+        |
+        v
+LCD Feedback + Serial Debug Output
 
-## Pin Configuration
-
-### I2C LCD connection
-- **SDA** → GPIO **21**
-- **SCL** → GPIO **22**
-
-LCD address used in code:
-
-```cpp
-0x27
+Mohamed yazid rebei
