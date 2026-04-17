@@ -1,13 +1,15 @@
 # ESP32 Smart PIN Authentication System
 
-A lightweight embedded authentication system built with **ESP32** and **I2C LCD**, designed as a prototype for a smart lock or access control module.  
-The system supports user registration, PIN-based login, display feedback, sleep mode, and progressive lockout after repeated failed authentication attempts.
+A lightweight embedded authentication system built with **ESP32** and **I2C LCD**, designed as a prototype for a smart lock, secure access panel, or embedded login gateway.
+
+The system supports **multi-user registration**, **PIN-based authentication**, **LCD status feedback**, **sleep mode**, and a **progressive anti-bruteforce protection mechanism**.
 
 ---
 
 ## Table of Contents
 
 - [Project Overview](#project-overview)
+- [Objectives](#objectives)
 - [Features](#features)
 - [System Architecture](#system-architecture)
 - [Hardware Requirements](#hardware-requirements)
@@ -19,6 +21,7 @@ The system supports user registration, PIN-based login, display feedback, sleep 
 - [Security Logic](#security-logic)
 - [How to Build and Run](#how-to-build-and-run)
 - [Example Serial Menu](#example-serial-menu)
+- [Example LCD Messages](#example-lcd-messages)
 - [Current Limitations](#current-limitations)
 - [Future Improvements](#future-improvements)
 - [Use Cases](#use-cases)
@@ -29,8 +32,9 @@ The system supports user registration, PIN-based login, display feedback, sleep 
 
 ## Project Overview
 
-This project implements a simple **PIN-based authentication system** on ESP32.  
-It is intended as a first prototype for embedded applications such as:
+This project implements a simple but structured **PIN authentication system** on an **ESP32** microcontroller.
+
+It is designed as a first prototype for embedded applications such as:
 
 - smart door access systems
 - secure embedded control panels
@@ -39,37 +43,56 @@ It is intended as a first prototype for embedded applications such as:
 
 The user interacts with the system through:
 
-- the **Serial Monitor** for input
-- a **16x2 I2C LCD** for feedback and status display
+- the **Serial Monitor** for menu navigation and PIN input
+- a **16x2 I2C LCD** for status feedback and user messages
+
+The project focuses on combining **embedded programming**, **basic security logic**, and **human-machine interaction** in a compact and understandable architecture.
+
+---
+
+## Objectives
+
+The main goals of this project are:
+
+- design a simple embedded authentication mechanism
+- manage multiple users with individual PIN codes
+- display system state clearly using an LCD
+- introduce basic protection against repeated login failures
+- create a clean foundation for future smart lock or home access projects
 
 ---
 
 ## Features
 
 - Registration of up to **5 users**
-- Unique **4-digit PIN** per user
+- Unique **4-digit PIN** for each user
 - Automatic username generation
 - PIN format validation
-- Authentication via serial input
-- LCD status messages
-- User list display
-- Sleep mode with LCD backlight off
+- Authentication through serial input
+- LCD feedback messages
+- User list display from serial monitor
+- Sleep mode with LCD backlight disabled
 - Progressive anti-bruteforce lockout:
-  - after first 3 failed attempts: **30 seconds**
-  - after second 3 failed attempts: **60 seconds**
+  - after first 3 failed attempts: **30 seconds lock**
+  - after second 3 failed attempts: **60 seconds lock**
   - after repeated failure: **permanent block until restart**
+- Simple menu-driven interface
+- Easy to extend for keypad, EEPROM, or web-based authentication
 
 ---
 
 ## System Architecture
 
-The project follows a simple procedural embedded design:
+The project follows a modular embedded logic flow:
 
-```text id="e2n6hu"
+```text
 User Input (Serial Monitor)
         |
         v
-PIN Validation / Menu Selection
+Menu Selection
+        |
+        v
+PIN Validation
         |
         v
 Authentication Logic
@@ -80,6 +103,4 @@ Authentication Logic
         +--> Sleep Mode
         |
         v
-LCD Feedback + Serial Debug Output
-```
-##Réalisé par  Mohamed yazid rebei
+LCD Feedback + Serial Output
