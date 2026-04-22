@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "systelLock",
+			"path": "../systelLock"
+		},
+		{
+			"name": "test",
+			"path": "."
+		}
+	],
+	"settings": {
+		"C_Cpp.errorSquiggles": "disabled"
+	}
+}
